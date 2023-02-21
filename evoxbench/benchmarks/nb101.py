@@ -264,7 +264,8 @@ class NASBench101Evaluator(Evaluator):
         return 'NASBench101Evaluator'
 
     def evaluate(self, archs, objs=None,
-                 true_eval=False  # query the true (mean over three runs) performance
+                 true_eval=False,  # query the true (mean over three runs) performance
+                 true_valid=False  # query the true (mean over multiple runs) validate performance
                  ):
 
         if objs is None:
@@ -284,6 +285,8 @@ class NASBench101Evaluator(Evaluator):
                 if true_eval:
                     top1 = np.mean(ans.final_test_accuracy[f"epoch{self.fidelity}"])
                     # top1 = np.mean([v['final_test_accuracy'] for v in ans.result[str(self.fidelity)]])
+                elif true_valid:
+                    top1 = np.mean(ans.final_validation_accuracy[f"epoch{self.fidelity}"])
                 else:
                     top1 = np.random.choice(ans.final_validation_accuracy[f"epoch{self.fidelity}"])
                     # top1 = np.random.choice([v['final_validation_accuracy'] for v in ans.result[str(self.fidelity)]])

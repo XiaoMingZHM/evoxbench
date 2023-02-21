@@ -94,7 +94,8 @@ class NASBench201Evaluator(Evaluator):
         return 'NASBench201Evaluator'
 
     def evaluate(self, archs, objs=None,
-                 true_eval=False  # query the true (mean over multiple runs) performance
+                 true_eval=False,  # query the true (mean over multiple runs) performance
+                 true_valid=False  # query the true (mean over multiple runs) validate performance
                  ):
 
         if objs is None:
@@ -109,6 +110,11 @@ class NASBench201Evaluator(Evaluator):
             if true_eval:
                 top1 = np.mean([v['test-accuracy'] for v in
                                 info.more_info[self.dataset]['hp{}'.format(self.fidelity)]])  # mean test accuracy
+            elif true_valid:
+                computed = [v['valid-accuracy'] for v in info.more_info[
+                    'cifar10-valid' if self.dataset == 'cifar10' else self.dataset][
+                    'hp{}'.format(self.fidelity)]]
+                top1 = np.mean(computed)  # mean valid accuracy
             else:
                 computed = [v['valid-accuracy'] for v in info.more_info[
                     'cifar10-valid' if self.dataset == 'cifar10' else self.dataset][
