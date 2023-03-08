@@ -9,6 +9,7 @@ import os
 from collections import OrderedDict
 
 from evoxbench.modules import SearchSpace, Evaluator, Benchmark, MLPPredictor
+from darts.models import NASBench301Result  # has to be imported after the init method
 
 warnings.filterwarnings("ignore")
 
